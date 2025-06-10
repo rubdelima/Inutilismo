@@ -1,7 +1,7 @@
 import librosa
 import numpy as np
 
-from src.core import get_logger
+from src.core import get_logger, AdvancedMemoryManager
 
 logger = get_logger("preprocess", console=False)
 

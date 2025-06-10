@@ -198,32 +198,29 @@ class RVCModelTrainer:
             res = None
             gpu_id = None
         
-        # Extrair features em paralelo com monitoramento de memória
+        # Extrair features sequencialmente (sem divisão em lotes)
         valid_features = []
-        batch_size = min(10, len(audio_files))  # Processar em lotes
         
-        for i in range(0, len(audio_files), batch_size):
-            batch_files = audio_files[i:i+batch_size]
-            logger.info(f"🔍 Processando lote {i//batch_size + 1}/{(len(audio_files) + batch_size - 1)//batch_size}")
-            
-            with ThreadPoolExecutor(max_workers=self.num_workers) as executor:
-                batch_results = list(tqdm(
-                    executor.map(self._extract_features_for_file, batch_files),
-                    total=len(batch_files),
-                    desc=f"Features lote {i//batch_size + 1}"
-                ))
-            
-            # Coletar features válidas do lote
-            for mfcc_flat in batch_results:
-                if mfcc_flat is not None:
-                    valid_features.append(mfcc_flat)
-            
-            # Limpeza de memória após cada lote
-            memory_manager.clear_memory()
-            
-            # Monitor de memória
-            if i % (batch_size * 2) == 0:
+        logger.info(f"🔍 Processando {len(audio_files)} arquivos sequencialmente...")
+        
+        for i, audio_file in enumerate(tqdm(audio_files, desc="Extraindo features")):
+            # Monitor de memória apenas a cada 10 arquivos
+            if i % 10 == 0:
                 memory_manager.monitor_memory()
+                
+                # Verificar se precisa limpar memória
+                if not memory_manager.should_use_gpu(0.5):
+                    logger.info("🧹 Limpando memória durante processamento...")
+                    memory_manager.clear_memory()
+            
+            mfcc_flat = self._extract_features_for_file(audio_file)
+            
+            if mfcc_flat is not None:
+                valid_features.append(mfcc_flat)
+            
+            # Limpeza de memória a cada 20 arquivos
+            if i % 20 == 0:
+                memory_manager.clear_memory()
         
         if not valid_features:
             raise ValueError("Nenhuma feature válida extraída")

@@ -1,6 +1,9 @@
 import yaml
 import multiprocessing as mp
 import torch
+import os
+
+os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
 
 with open('config.yaml', encoding='utf-8') as f:
     GLOBAL_CONFIG = yaml.safe_load(f)
