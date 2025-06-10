@@ -1,0 +1,99 @@
+# Configurações do projeto LVCAS
+youtube:
+
+  # === CONFIGURAÇÕES DE QUALIDADE ===
+  
+  # Qualidade máxima de vídeo que será baixada
+  # Opções: 144, 240, 360, 480, 720, 1080, 1440, 2160, "max"
+  # "max" = melhor qualidade disponível (pode incluir 4K, 8K, etc.)
+  max_video_quality: 1080
+  
+  # Qualidade máxima de áudio que será baixada
+  # Opções: 96, 128, 192, 256, 320, "max"
+  # "max" = melhor qualidade disponível (até 256kbps normalmente)
+  max_audio_quality: max
+  
+  # === CONFIGURAÇÕES DE FORMATO ===
+  
+  # Codec de áudio preferido para conversão
+  # Opções: mp3, aac, flac, ogg, m4a, wav
+  audio_codec: mp3
+  
+  # Codec de vídeo preferido
+  # Opções: mp4, webm, mkv, avi, mov
+  video_codec: mp4
+  
+  # === CONFIGURAÇÕES DE DOWNLOAD ===
+  
+  # Pasta padrão para downloads
+  download_path: "./downloads"
+  
+  # Criar subpastas por canal/playlist
+  organize_by_channel: false
+  
+  # Template de nome dos arquivos
+  # Variáveis disponíveis: %(title)s, %(uploader)s, %(upload_date)s, %(duration)s
+  filename_template: "%(title)s.%(ext)s"
+  
+  # === CONFIGURAÇÕES AVANÇADAS ===
+  
+  # Baixar legendas automaticamente
+  download_subtitles: false
+  
+  # Idiomas das legendas (quando habilitado)
+  subtitle_languages: 
+    - pt
+    - en
+  
+  # Limite de velocidade de download (em KB/s, 0 = sem limite)
+  rate_limit: 0
+  
+  # Continuar downloads interrompidos
+  continue_download: true
+  
+  # Pular downloads se arquivo já existir
+  skip_existing: true
+
+  # === CONFIGURAÇÕES DE PLAYLIST ===
+  playlist:
+    # Baixar playlist inteira ou apenas vídeos específicos
+    download_entire_playlist: true
+    
+    # Número máximo de vídeos por playlist (0 = sem limite)
+    max_videos_per_playlist: 0
+    
+    # Ordem de download: newest, oldest, random
+    download_order: newest
+    
+    # Downloads simultâneos
+    concurrent_downloads: 3
+    
+    # Delay entre downloads (segundos)
+    delay_between_downloads: 1
+
+# === CONFIGURAÇÕES GERAIS DO PROJETO LVCAS ===
+logging:
+  # Nível de log: DEBUG, INFO, WARNING, ERROR
+  level: INFO
+  
+  # Salvar logs em arquivo
+  save_to_file: true
+  
+  # Arquivo de log geral do projeto
+  log_file: "./logs/lvcas.log"
+
+  # Global Verbose, se True, então haverá saída por todo o código
+  global_verbose : True
+
+  # Verbose Classes (caso global verbose seja False, ainda sim tem como controlar quais arquivos terão saídas explicitas)
+  verbose_classes : [
+    extract_features,
+    memory_manager,
+    preprocess,
+    rvc_trainer,
+    separate_audio,
+    voice_manager
+  ]
+
+memory_manager:
+  min_num_workers : 4

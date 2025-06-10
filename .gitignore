@@ -1,0 +1,44 @@
+# Dados e downloads
+data/
+downloads/
+logs/
+separeted
+
+# Python
+*__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+.env
+.mypy_cache/
+
+# Arquivos temporários
+*.tmp
+*.temp
+temp/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Arquivos de mídia baixados
+*.mp4
+*.mp3
+*.webm
+*.wav
+*.m4a
+*.flac
+*.ogg
+
+#External Lib
+hifi-gan/
